@@ -1,0 +1,56 @@
+# [TASK 1]
+targetDirectory="/path/to/source"          
+destinationDirectory="/path/to/backup"     
+
+# [TASK 2]
+echo "Target Directory: $targetDirectory"
+echo "Destination Directory: $destinationDirectory"
+
+# [TASK 3]
+currentTS=$(date +%s)
+
+# [TASK 4]
+backupFileName="backup-${currentTS}.tar.gz"
+
+# [TASK 5]
+origAbsPath=$(readlink -f "$targetDirectory")
+
+# [TASK 5]
+origAbsPath=$(readlink -f "$targetDirectory")
+
+# [TASK 6]
+destAbsPath=$(readlink -f "$destinationDirectory")
+
+# [TASK 7]
+cd "$targetDirectory" || { echo "Failed to change directory to $targetDirectory"; exit 1; }
+
+# [TASK 8]
+yesterdayTS=$((currentTS - 86400))
+
+# [TASK 9]
+filesAndDirs=$(ls -A)
+
+# [TASK 10]
+if [ "$(find "$file" -mtime -1)" ]; then
+    echo "$file was updated within the past day."
+else
+    echo "$file was not updated within the past day."
+fi
+
+# [TASK 11]
+toBackup=() 
+
+for file in $(find "$targetDirectory" -type f -mtime -1); do
+    if [ -f "$file" ]; then
+        toBackup+=("$file")
+        echo "Added $file to toBackup array."
+    fi
+done
+
+# [TASK 12]
+timestamp=$(date +%Y%m%d%H%M%S)
+backupFileName="backup-$timestamp.tar.gz"
+tar -czf "$backupFileName" "${toBackup[@]}"
+
+# [TASK 13]
+mv "$backupFileName" "$destinationPath/"
